@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>Invoice</title>
+	</head>
+	<body>
+		<style>
+			body {
+				margin: 10px auto;
+				width: 100%;
+				max-width: 700px;
+				font-family: Arial, sans-serif;
+			}
+			body header {
+				background-color: #f7fbfc;
+				padding-top: 30px;
+			}
+			.message {
+				text-align: center;
+			}
+			.customer_information {
+				display: flex;
+				justify-content: space-around;
+			}
+
+			p {
+				color: #333;
+				line-height: 2px;
+			}
+			button {
+				color: #eeee;
+				background-color: #000000;
+				padding: 15px;
+				margin-top: 10px;
+				border-radius: 5px;
+				cursor: pointer;
+				border: none;
+			}
+
+			hr {
+				margin: 20px 0;
+				height: 3px;
+				background-color: #ebeeee;
+				border: none;
+			}
+			.summary {
+				text-align: center;
+			}
+			.orders {
+				margin: 0;
+				display: flex;
+				align-items: center;
+			}
+			.orders img {
+				max-width: 100px;
+				margin-right: 20px;
+			}
+			.description {
+				flex-grow: 1;
+			}
+			.description span {
+				color: #8c95a0;
+			}
+			#total {
+				display: flex;
+				justify-content: flex-end;
+			}
+			#totals {
+				text-align: center;
+			}
+			#totals span {
+				margin-left: 50px;
+				margin-right: 50px;
+				text-align: right;
+			}
+			#total_price {
+				font-weight: bold;
+			}
+			footer {
+				background-color: #f7fbfc;
+				margin-top: 10px;
+				border-radius: 5px;
+			}
+			footer div {
+				text-align: center;
+				padding-top: 10px;
+			}
+			footer p {
+				line-height: 20px;
+				color: #000000;
+			}
+
+			.message {
+				text-align: center;
+			}
+
+			.message p {
+				line-height: 1.5;
+			}
+			.customer_information {
+				flex-direction: column;
+				text-align: center;
+			}
+
+			.customer_information div {
+				margin-bottom: 20px;
+			}
+
+			.orders {
+				flex-direction: column;
+			}
+
+			#total {
+				flex-direction: column;
+			}
+
+			#totals span {
+				margin-left: 0;
+				margin-right: 0;
+				text-align: center;
+			}
+
+			#total_price span {
+				margin-left: 0;
+				text-align: center;
+			}
+
+			.links {
+				display: flex;
+			}
+
+			a {
+				text-decoration: none;
+			}
+		</style>
+		<header>
+			<section class="message">
+				<img
+					src="https://lh3.googleusercontent.com/drive-viewer/AEYmBYRgHle8HC5SnF_P5k47Ngiy-5rLPIx9g0hx8OncESp8bGwbsoVmoN8GRsQx1kZ-3aw9PifI2L5ti5x9wykM-N1VgZW-xQ=w1920-h993"
+					width="100"
+				/>
+				<h1>Thank you for your purchase</h1>
+			</section>
+			<hr class="hr" />
+			<section class="customer_information">
+				<div>
+					<h3>Shipping address</h3>
+					<p><strong>Invoice Number:</strong> {{orderId}}</p>
+					<p><strong>Created At:</strong> {{createdAt}}</p>
+					<p><strong>Client Name:</strong> {{fullName}}</p>
+					<p>{{address}}, {{city}}, {{zipCode}}, {{country}}</p>
+					<p>{{email}}</p>
+					<p>{{phone}}</p>
+				</div>
+			</section>
+		</header>
+		<main>
+			<h3 class="summary">Order summary</h3>
+			<hr />
+			{{#each products}}
+			<section class="orders">
+				<div class="image">
+					<img
+						src="{{this.defaultImage}}"
+						width="200"
+						height="200"
+						alt="{{this.name}}"
+					/>
+				</div>
+				<div class="description">
+					<h3>
+						{{this.name}}
+						<p>Price: {{this.priceAfterDiscount}}</p>
+						<p>quantity: {{this.quantity}}</p>
+					</h3>
+					<p>Details: {{this.details}}</p>
+				</div>
+				<div class="price">
+					<h3>Amount: {{this.total}} TND</h3>
+				</div>
+			</section>
+			<hr />
+			{{/each}}
+			<section id="total">
+				<div id="totals">
+					<p>Subtotal <span>{{subTotal}} TND</span></p>
+					{{#if orderDiscount}}
+					<p>Extra discount <span>{{orderDiscount.discount}} TND</span></p>
+					{{/if}}
+					<p>Shipping <span>{{shipping}} TND</span></p>
+					<hr />
+					<p id="price">Total <span>{{total}} TND</span></p>
+				</div>
+			</section>
+		</main>
+		<footer>
+			<div>
+				<p>
+					if you have any questions, reply to this <br />email or
+					<b>contact us at</b> {{adminEmail}} <br />Or by calling us at (+216)
+					22 432 868
+				</p>
+				<div class="links">
+					<a
+						href="https://www.tiktok.com/@mercerie.maryouma"
+						title="TikTok"
+						rel="noreferrer"
+						target="_blank"
+						data-saferedirecturl="https://www.google.com/url?q=https://www.tiktok.com/@mercerie.maryouma&amp;source=gmail&amp;ust=1708801283901000&amp;usg=AOvVaw2FiJRjyBmCaGKh8JPnVXXN"
+					>
+						<img
+							src="https://lh3.googleusercontent.com/drive-viewer/AEYmBYRsLqnXjTS8UJygjsqb7FAUSjYqXxwALV4K0AdKxGuGQG4DszzWsrZP-PC6O325Ncd2U3CL_fpDyinqMvGn5usgA-HAnw=w1920-h993"
+							alt="TikTok"
+							title="TikTok"
+							width="32"
+						/>
+					</a>
+
+					<a
+						href="https://www.instagram.com/mercerie_maryouma"
+						title="Instagram"
+						rel="noreferrer"
+						target="_blank"
+						data-saferedirecturl="https://www.google.com/url?q=https://www.instagram.com/mercerie_maryouma&amp;source=gmail&amp;ust=1708801283901000&amp;usg=AOvVaw0sd_jIqTn07BFaqbspBDAs"
+					>
+						<img
+							src="https://lh3.googleusercontent.com/drive-viewer/AEYmBYRV-81chI_hEDxK5EwbMFuiaMPjx7JQPFP12TSQN6AdeMWbBFhsBM5f2ozBEvppAPbM3DxUFg3eCZP-1I3jZhzeTYzA-Q=w1920-h993"
+							alt="Instagram"
+							title="Instagram"
+							width="32"
+						/>
+					</a>
+
+					<a
+						href="https://www.facebook.com/Merceriezeramdine"
+						title="Facebook"
+						rel="noreferrer"
+						target="_blank"
+						data-saferedirecturl="https://www.google.com/url?q=https://www.facebook.com/Merceriezeramdine&amp;source=gmail&amp;ust=1708801283900000&amp;usg=AOvVaw01A4t7RVaXfCsX2e01CtKf"
+					>
+						<img
+							src="https://lh3.googleusercontent.com/drive-viewer/AEYmBYR2Fi-Kaxya60goA-0NxckLc_WY9JTAPNICpI79bMkBy1Ivn3WARXR8O4zhP1mJU8FGngZ4e_iz5eDjCzbu4TwxXQXTxQ=w1920-h993"
+							alt="Facebook"
+							title="Facebook"
+							width="32"
+						/>
+					</a>
+				</div>
+			</div>
+		</footer>
+	</body>
+</html>
