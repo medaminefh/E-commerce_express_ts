@@ -5,7 +5,6 @@ import {
 	getProducts,
 	getUndelitedProducts,
 	getPublishedProducts,
-	getProductsByCategory,
 	getProduct,
 	updateProduct,
 	deleteProduct,
@@ -35,10 +34,7 @@ router.get(
 	"/:productId",
 	getProduct as unknown as (req: Request, res: Response) => void
 );
-router.get(
-	"/:categoryId/bycategory",
-	getProductsByCategory as unknown as (req: Request, res: Response) => void
-);
+
 router.put(
 	"/:productId",
 	auth as unknown as (req: Request, res: Response) => void,

@@ -28,7 +28,7 @@ export const createProduct = async (req: IRequest, res: Response) => {
 
 export const getProducts = async (_: IRequest, res: Response) => {
 	try {
-		const products = await productModel.find().populate("category");
+		const products = await productModel.find();
 
 		return res.status(200).json(products);
 	} catch (err) {
@@ -38,9 +38,7 @@ export const getProducts = async (_: IRequest, res: Response) => {
 
 export const getUndelitedProducts = async (_: IRequest, res: Response) => {
 	try {
-		const products = await productModel
-			.find({ deleted: false })
-			.populate("category");
+		const products = await productModel.find({ deleted: false });
 
 		return res.status(200).json(products);
 	} catch (err) {
@@ -50,23 +48,10 @@ export const getUndelitedProducts = async (_: IRequest, res: Response) => {
 
 export const getPublishedProducts = async (_: IRequest, res: Response) => {
 	try {
-		const products = await productModel
-			.find({ published: true, deleted: false })
-			.populate("category");
-
-		return res.status(200).json(products);
-	} catch (err) {
-		return res.status(500).json(err);
-	}
-};
-
-export const getProductsByCategory = async (req: IRequest, res: Response) => {
-	try {
-		const categoryName = req.params.categoryName;
-
-		const products = await productModel
-			.find({ deleted: false, "category.name": categoryName })
-			.populate("category");
+		const products = await productModel.find({
+			published: true,
+			deleted: false,
+		});
 
 		return res.status(200).json(products);
 	} catch (err) {
@@ -77,7 +62,7 @@ export const getProductsByCategory = async (req: IRequest, res: Response) => {
 export const getProduct = async (req: IRequest, res: Response) => {
 	const id = req.params.productId;
 	try {
-		const product = await productModel.findById(id).populate("category");
+		const product = await productModel.findById(id);
 
 		return res.status(200).json(product);
 	} catch (err) {

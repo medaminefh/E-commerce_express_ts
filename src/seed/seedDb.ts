@@ -2,7 +2,45 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
+import ProductModel from "../models/product.model";
 import UserModel from "../models/user.model";
+
+const fetchProducts = async () => {
+	const data = await fetch("http://localhost:3000/api/products");
+	return await data.json();
+};
+
+const createInitialUsers = async () => {
+	try {
+		const rootExists = UserModel.findOne({ username: "root" });
+		if (!rootExists) {
+			// create the admin user
+			const admin = new UserModel({
+				email: "root@gmail.com",
+				username: "root",
+				password: process.env.ADMIN_PASS,
+				role: "admin",
+			});
+			await admin.save();
+			console.log("Admin created");
+		}
+		const userExists = UserModel.findOne({ username: "user" });
+		if (!userExists) {
+			// create the user
+			const user = new UserModel({
+				email: "user@gmail.com",
+				username: "user",
+				password: process.env.USER_PASS,
+				role: "user",
+			});
+
+			await user.save();
+			console.log("User created");
+		}
+	} catch (error) {
+		console.log("Error creating the users", error);
+	}
+};
 try {
 	mongoose.set("strictQuery", true);
 	// DB connection
@@ -10,21 +48,15 @@ try {
 
 	mongoose.connection.on("connected", async () => {
 		console.log("DB connected");
-		// create the admin user
-		const admin = new UserModel({
-			email: "root@gmail.com",
-			password: process.env.ADMIN_PASS,
-			role: "admin",
-		});
-		const user = new UserModel({
-			email: "user@gmail.com",
-			password: process.env.USER_PASS,
-			role: "user",
-		});
-		await admin.save();
-		console.log("Admin created");
-		await user.save();
-		console.log("User created");
+
+		// creating users
+		await createInitialUsers();
+
+		// create the products
+		const products = await fetchProducts();
+		const insertedProducts = await ProductModel.insertMany(products);
+		console.log("Products created", insertedProducts);
+		process.exit(0);
 	});
 
 	mongoose.connection.on("error", (err: Error) => {
