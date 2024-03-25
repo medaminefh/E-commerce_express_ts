@@ -7,7 +7,7 @@ import type { IRequest } from "../types";
 export const login = async (req: IRequest, res: Response) => {
 	try {
 		const user = await userModel
-			.findOne({ username: req.body!.username })
+			.findOne({ email: req.body!.email })
 			.select("+password");
 
 		if (!user) return res.status(401).json({ status: "wrong email" });
@@ -18,7 +18,6 @@ export const login = async (req: IRequest, res: Response) => {
 		const token = jwt.sign(
 			{
 				email: user.email,
-				username: user.username,
 			},
 			process.env.TOKEN_SECRET!,
 			{ expiresIn: "2d" }
@@ -42,10 +41,14 @@ export const register = async (req: IRequest, res: Response) => {
 		// Generating the salt
 
 		const newUser = new userModel({
-			username: req.body!.username,
-			email: req.body!.email,
-			password: req.body!.password,
-			avatar: req.body!.avatar || "",
+			fullName: req.body.fullName,
+			email: req.body.email,
+			address: req.body.address,
+			city: req.body.city,
+			zipCode: req.body.zipCode,
+			phone: req.body.phone,
+			country: req.body.country,
+			password: req.body.password,
 		});
 		const savedUser = await newUser.save();
 

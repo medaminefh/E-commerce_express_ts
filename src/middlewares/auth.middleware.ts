@@ -10,13 +10,13 @@ export const auth = async (
 	res: Response,
 	next: NextFunction
 ) => {
-	const token = req.header("auth-token");
+	const token = req.header("Authorization");
 	if (!token) return res.status(401).json({ status: "Access Denied" });
 
 	try {
 		const verified = jwt.verify(token, process.env.TOKEN_SECRET!);
 		const user = await userModel.findOne({
-			username: (verified as jwt.JwtPayload).username,
+			email: (verified as jwt.JwtPayload).email,
 		});
 		if (!user) return res.status(401).json({ status: "user not found" });
 		next();
