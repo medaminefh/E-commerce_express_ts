@@ -12,24 +12,24 @@ const fetchProducts = async () => {
 
 const createInitialUsers = async () => {
 	try {
-		const rootExists = UserModel.findOne({ username: "root" });
+		const rootExists = UserModel.findOne({ email: "root@gmail.com" });
 		if (!rootExists) {
 			// create the admin user
 			const admin = new UserModel({
 				email: "root@gmail.com",
-				username: "root",
+				fullName: "root",
 				password: process.env.ADMIN_PASS,
 				role: "admin",
 			});
 			await admin.save();
 			console.log("Admin created");
 		}
-		const userExists = UserModel.findOne({ username: "user" });
+		const userExists = UserModel.findOne({ username: "user@gmail.com" });
 		if (!userExists) {
 			// create the user
 			const user = new UserModel({
 				email: "user@gmail.com",
-				username: "user",
+				fullName: "user",
 				password: process.env.USER_PASS,
 				role: "user",
 			});

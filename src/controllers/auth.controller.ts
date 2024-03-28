@@ -24,7 +24,7 @@ export const login = async (req: IRequest, res: Response) => {
 		);
 		req.user = user.id;
 
-		return res.status(200).json({ token });
+		return res.status(200).json({ token, role: user.role });
 	} catch (error: any) {
 		return res.status(500).json(error);
 	}
@@ -34,9 +34,11 @@ export const register = async (req: IRequest, res: Response) => {
 	try {
 		// check if the user exists
 		const UserExist = await userModel.findOne({ email: req.body!.email });
-
-		if (UserExist)
+		console.log(req.body);
+		if (UserExist) {
+			console.log(UserExist);
 			return res.status(500).json({ status: "User Already exist" });
+		}
 
 		// Generating the salt
 
@@ -54,6 +56,7 @@ export const register = async (req: IRequest, res: Response) => {
 
 		return res.status(200).json(savedUser);
 	} catch (error: any) {
+		console.log({ error });
 		return res.status(500).json(error);
 	}
 };
