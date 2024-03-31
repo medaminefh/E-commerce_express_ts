@@ -59,4 +59,10 @@ const ProductSchema = new mongoose.Schema(
 	{ timestamps: true }
 );
 
+// every find request should return the undeleted products and the published products
+ProductSchema.pre(/^find/, function (next) {
+	this.find({ deleted: { $ne: true }, published: true });
+	next();
+});
+
 export default mongoose.model("Product", ProductSchema);

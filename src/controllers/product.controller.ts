@@ -36,29 +36,6 @@ export const getProducts = async (_: IRequest, res: Response) => {
 	}
 };
 
-export const getUndelitedProducts = async (_: IRequest, res: Response) => {
-	try {
-		const products = await productModel.find({ deleted: false });
-
-		return res.status(200).json(products);
-	} catch (err) {
-		return res.status(500).json(err);
-	}
-};
-
-export const getPublishedProducts = async (_: IRequest, res: Response) => {
-	try {
-		const products = await productModel.find({
-			published: true,
-			deleted: false,
-		});
-
-		return res.status(200).json(products);
-	} catch (err) {
-		return res.status(500).json(err);
-	}
-};
-
 export const getProduct = async (req: IRequest, res: Response) => {
 	const id = req.params.productId;
 	try {
@@ -86,6 +63,23 @@ export const deleteProduct = async (req: IRequest, res: Response) => {
 		return res.status(500).json(err);
 	}
 };
+
+export const deleteMultipleProducts = async (req: IRequest, res: Response) => {
+	const ids = req.body.ids;
+	try {
+		await productModel.updateMany(
+			{ _id: { $in: ids } },
+			{
+				deleted: true,
+				deletedBy: req.user,
+			}
+		);
+		return res.status(200).json(productModel);
+	}
+	catch (err) {
+		return res.status(500).json(err);
+	}
+}
 
 export const updateProduct = async (req: IRequest, res: Response) => {
 	const id = req.params.productId;

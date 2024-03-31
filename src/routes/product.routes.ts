@@ -3,8 +3,6 @@ import { Request, Response } from "express";
 import {
 	createProduct,
 	getProducts,
-	getUndelitedProducts,
-	getPublishedProducts,
 	getProduct,
 	updateProduct,
 	deleteProduct,
@@ -22,14 +20,7 @@ router.get(
 	"/",
 	getProducts as unknown as (req: Request, res: Response) => void
 );
-router.get(
-	"/undelited",
-	getUndelitedProducts as unknown as (req: Request, res: Response) => void
-);
-router.get(
-	"/published",
-	getPublishedProducts as unknown as (req: Request, res: Response) => void
-);
+
 router.get(
 	"/:productId",
 	getProduct as unknown as (req: Request, res: Response) => void
