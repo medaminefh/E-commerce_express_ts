@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 import ProductModel from "../models/product.model";
-import UserModel from "../models/user.model";
+import {UserModel} from "../models/user.model";
 
 const fetchProducts = async () => {
 	const data = await fetch("http://localhost:3000/api/products");

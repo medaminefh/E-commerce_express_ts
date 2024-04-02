@@ -5,6 +5,7 @@ import {
 	getUsers,
 	deleteUser,
 	updateUser,
+	getCurrentUser,
 } from "../controllers/user.controller";
 import { auth } from "../middlewares/auth.middleware";
 
@@ -15,11 +16,20 @@ router.get(
 	auth as unknown as (req: Request, res: Response, next: NextFunction) => void,
 	getUsers
 );
+
+router.get(
+	"/current",
+	auth as unknown as (req: Request, res: Response, next: NextFunction) => void,
+	getCurrentUser as unknown as (req: Request, res: Response) => void
+);
+
 router.get(
 	"/:userId",
 	auth as unknown as (req: Request, res: Response, next: NextFunction) => void,
 	getUser
 );
+
+
 router.put(
 	"/:userId",
 	auth as unknown as (req: Request, res: Response, next: NextFunction) => void,

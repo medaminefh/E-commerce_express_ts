@@ -3,7 +3,7 @@
 import { Response, NextFunction } from "express";
 import { IRequest } from "../types";
 import jwt from "jsonwebtoken";
-import userModel from "../models/user.model";
+import {UserModel} from "../models/user.model";
 
 export const auth = async (
 	req: IRequest,
@@ -15,9 +15,10 @@ export const auth = async (
 
 	try {
 		const verified = jwt.verify(token, process.env.TOKEN_SECRET!);
-		const user = await userModel.findOne({
+		const user = await UserModel.findOne({
 			email: (verified as jwt.JwtPayload).email,
 		});
+		req.user = user;
 		if (!user) return res.status(401).json({ status: "user not found" });
 		next();
 	} catch (err) {

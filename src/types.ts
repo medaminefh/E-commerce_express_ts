@@ -1,6 +1,7 @@
 import { Request } from "express";
+import { IUser } from "./models/user.model";
 export interface IRequest extends Request {
-	user: string; // or any other type
+	user: IUser | null; // or any other type
 }
 
 export interface IProduct {
@@ -35,13 +36,4 @@ export interface IOrder {
 	products: [];
 	total: number;
 	createdAt: Date;
-}
-
-export interface IUser {
-	_id: string;
-	username: string;
-	password: string;
-	email: string;
-	role: string;
-	avatar: string;
 }

@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
-import userModel from "../models/user.model";
+import {UserModel} from "../models/user.model";
 import jwt from "jsonwebtoken";
 import { Response } from "express";
 import type { IRequest } from "../types";
 
 export const login = async (req: IRequest, res: Response) => {
 	try {
-		const user = await userModel
+		const user = await UserModel
 			.findOne({ email: req.body!.email })
 			.select("+password");
 
@@ -22,7 +22,6 @@ export const login = async (req: IRequest, res: Response) => {
 			process.env.TOKEN_SECRET!,
 			{ expiresIn: "2d" }
 		);
-		req.user = user.id;
 
 		return res.status(200).json({ token, role: user.role });
 	} catch (error: any) {
@@ -33,7 +32,7 @@ export const login = async (req: IRequest, res: Response) => {
 export const register = async (req: IRequest, res: Response) => {
 	try {
 		// check if the user exists
-		const UserExist = await userModel.findOne({ email: req.body!.email });
+		const UserExist = await UserModel.findOne({ email: req.body!.email });
 		console.log(req.body);
 		if (UserExist) {
 			console.log(UserExist);
@@ -42,7 +41,7 @@ export const register = async (req: IRequest, res: Response) => {
 
 		// Generating the salt
 
-		const newUser = new userModel({
+		const newUser = new UserModel({
 			fullName: req.body.fullName,
 			email: req.body.email,
 			address: req.body.address,
