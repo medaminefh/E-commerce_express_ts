@@ -22,8 +22,9 @@ export const login = async (req: IRequest, res: Response) => {
 			process.env.TOKEN_SECRET!,
 			{ expiresIn: "2d" }
 		);
+		req.user = user
 
-		return res.status(200).json({ token, role: user.role });
+		return res.status(200).json({ token, user });
 	} catch (error: any) {
 		return res.status(500).json(error);
 	}

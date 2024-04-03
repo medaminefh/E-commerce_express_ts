@@ -25,7 +25,6 @@ app.use(helmet());
 app.use(compression());
 
 //import routes
-import categoryRoutes from "./routes/category.routes";
 import productRoutes from "./routes/product.routes";
 import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
@@ -33,7 +32,6 @@ import checkoutRoutes from "./routes/checkout.routes";
 
 //routes middleware
 app.use("/products", productRoutes);
-app.use("/categories", categoryRoutes);
 app.use("/users", userRoutes);
 app.use("/checkout", checkoutRoutes);
 app.use("/auth", authRoutes);
