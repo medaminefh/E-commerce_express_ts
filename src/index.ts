@@ -26,12 +26,14 @@ app.use(compression());
 
 //import routes
 import productRoutes from "./routes/product.routes";
+import orderRoutes from "./routes/order.routes";
 import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
 import checkoutRoutes from "./routes/checkout.routes";
 
 //routes middleware
 app.use("/products", productRoutes);
+app.use("/orders", orderRoutes);
 app.use("/users", userRoutes);
 app.use("/checkout", checkoutRoutes);
 app.use("/auth", authRoutes);
