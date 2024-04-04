@@ -61,7 +61,7 @@ const ProductSchema = new mongoose.Schema(
 
 // every find request should return the undeleted products and the published products
 ProductSchema.pre(/^find/, function (next) {
-	this.find({ deleted: { $ne: true }, published: true });
+	this.find({ deleted: false });
 	next();
 });
 

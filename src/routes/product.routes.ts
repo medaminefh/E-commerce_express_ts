@@ -5,7 +5,8 @@ import {
 	getProducts,
 	getProduct,
 	updateProduct,
-	deleteProduct,
+	unpublishProducts,
+	getProductsForAdmin,
 } from "../controllers/product.controller";
 import { auth } from "../middlewares/auth.middleware";
 
@@ -22,6 +23,12 @@ router.get(
 );
 
 router.get(
+	"/admin",
+	auth as unknown as (req: Request, res: Response) => void,
+	getProductsForAdmin as unknown as (req: Request, res: Response) => void
+);
+
+router.get(
 	"/:productId",
 	getProduct as unknown as (req: Request, res: Response) => void
 );
@@ -31,10 +38,10 @@ router.put(
 	auth as unknown as (req: Request, res: Response) => void,
 	updateProduct as unknown as (req: Request, res: Response) => void
 );
-router.delete(
+router.patch(
 	"/:productId",
 	auth as unknown as (req: Request, res: Response) => void,
-	deleteProduct as unknown as (req: Request, res: Response) => void
+	unpublishProducts as unknown as (req: Request, res: Response) => void
 );
 
 export default router;

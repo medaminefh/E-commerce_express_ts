@@ -28,8 +28,17 @@ export const createProduct = async (req: IRequest, res: Response) => {
 
 export const getProducts = async (_: IRequest, res: Response) => {
 	try {
-		const products = await productModel.find();
+		const products = await productModel.find({published: true});
 
+		return res.status(200).json(products);
+	} catch (err) {
+		return res.status(500).json(err);
+	}
+};
+
+export const getProductsForAdmin = async (_: IRequest, res: Response) => {
+	try {
+		const products = await productModel.find();
 		return res.status(200).json(products);
 	} catch (err) {
 		return res.status(500).json(err);
@@ -84,10 +93,30 @@ export const deleteMultipleProducts = async (req: IRequest, res: Response) => {
 export const updateProduct = async (req: IRequest, res: Response) => {
 	const id = req.params.productId;
 	try {
-		const chapter = await productModel.findByIdAndUpdate(id, req.body, {
-			new: true,
-		});
-		return res.status(200).json(chapter);
+		const updatedProduct = await productModel.findByIdAndUpdate(
+			id,
+			req.body,
+			{ new: true }
+		);
+		return res.status(200).json(updatedProduct);
+	} catch (err) {
+		return res.status(500).json(err);
+	}
+}
+
+export const unpublishProducts = async (req: IRequest, res: Response) => {
+	// unpublish multiple products
+
+	const ids = req.body.ids;
+	try {
+		await productModel.updateMany(
+			{ _id: { $in: ids } },
+			{
+				published: false,
+				updatedBy: req.user,
+			}
+		);
+		return res.status(200).json("products unpublished");
 	} catch (err) {
 		return res.status(500).json(err);
 	}
