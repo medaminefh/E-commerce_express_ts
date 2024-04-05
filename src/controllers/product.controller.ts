@@ -4,17 +4,17 @@ import { Response } from "express";
 
 export const createProduct = async (req: IRequest, res: Response) => {
 	try {
+		const { title, price, discount, priceAfterDiscount, description, published } = req.body;
+		const defaultImage = "https://media.glamourmagazine.co.uk/photos/6138a815aa3b5acf3b0dc7da/16:9/w_2768,h_1557,c_limit/product.jpg";
 		// get the storyId
 		const newProduct = new productModel({
-			title: req.body.title,
-			defaultPrice: req.body.defaultPrice,
-			discount: req.body.discount,
-			priceAfterDiscount: req.body.priceAfterDiscount,
-			category: req.body.category,
-			description: req.body.description,
-			images: req.body.images,
-			defaultImage: req.body.defaultImage,
-			published: req.body.published,
+			title,
+			price,
+			discount: discount,
+			priceAfterDiscount: discount ? priceAfterDiscount: 0,
+			description: description,
+			image: defaultImage,
+			published,
 			createdBy: req.user,
 			updatedBy: req.user,
 		});

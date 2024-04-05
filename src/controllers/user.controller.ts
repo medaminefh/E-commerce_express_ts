@@ -5,7 +5,8 @@ import { Request, Response } from "express";
 export const getUsers = async (_: Request, res: Response) => {
 	try {
 		// get all users without their passwords (with the select method)
-		const users = await UserModel.find();
+		// getting all users exept the current one
+		const users = await UserModel.find({ role: "user" }).select("-password").exec();
 		return res.status(200).json(users);
 	} catch (err) {
 		return res.status(500).json(err);
