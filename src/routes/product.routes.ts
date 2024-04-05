@@ -39,7 +39,7 @@ router.put(
 	updateProduct as unknown as (req: Request, res: Response) => void
 );
 router.patch(
-	"/:productId",
+	"/unpublish",
 	auth as unknown as (req: Request, res: Response) => void,
 	unpublishProducts as unknown as (req: Request, res: Response) => void
 );
