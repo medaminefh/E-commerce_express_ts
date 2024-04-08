@@ -2,12 +2,10 @@ import { IRequest } from "../types";
 import {OrderModel} from "../models/order.model";
 import { Response } from "express";
 
-export const getOrders = async (_: IRequest, res: Response) => {
-	try {
-        // aggregate the products field in the order collection
-
-        //const orders = await OrderModel.find()
-        const orders = await OrderModel.aggregate([
+export const getOrders = async (_: IRequest, res: Response) => {    
+    try {
+        const aggregatedOrders = await OrderModel.aggregate([
+            { $unwind: "$products" },
             {
                 $lookup: {
                     from: "users",
@@ -17,38 +15,36 @@ export const getOrders = async (_: IRequest, res: Response) => {
                 },
             },
             {
-				$project: {
-					client: {
-						password: 0,
-						__v: 0,
-						_id: 0,
-					},
-				},
-			},
-/*             {
-                $unwind: "$productDetails"
+                $lookup: {
+                    from: "products",
+                    localField: "products.id",
+                    foreignField: "_id",
+                    as: "products.productDetails",
+                },
+            },
+
+            { $unwind: "$products.productDetails" },
+            { $unwind: "$client" },
+            {
+                $project: {
+                    "client.password": 0
+                }
             },
             {
                 $group: {
                     _id: "$_id",
-                    client: { $first: "$client" },
-                    products: {
-                        $push: {
-                            id: "$products.id",
-                            quantity: "$products.quantity",
-                            productDetails: "$productDetails"
-                        }
-                    },
-                    shipping: { $first: "$shipping" },
-                    subTotal: { $first: "$subTotal" },
-                    total: { $first: "$total" },
-                    createdAt: { $first: "$createdAt" },
+                    client: {$first:"$client"} ,
                     orderId: { $first: "$orderId" },
-                }
-            } */
+                    createdAt: {$first:"$createdAt"},
+                    products: { $push: "$products" },
+                    total: { $first: "$total" },
+                    subTotal: { $first: "$subTotal" },
+                    shipping: { $first: "$shipping" },
+                },
+            },
+
         ]);
-        
-		return res.status(200).json(orders);
+		return res.status(200).json(aggregatedOrders);
 	} catch (err) {
 		return res.status(500).json(err);
 	}

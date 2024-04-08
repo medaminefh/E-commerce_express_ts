@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && cp -r src/views dist/views",
+    "build": "tsc",
     "start": "node dist/index.js",
     "prepare": "rm -rf dist && pnpm run build",
     "dev": "pnpm prepare && cp -r src/views dist/ && concurrently \"tsc -w\" \"nodemon -q dist/index.js\""

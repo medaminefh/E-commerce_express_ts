@@ -14,7 +14,15 @@ const OrderSchema: Schema = new Schema({
 		ref: "Client",
 		required: true,
 	},
-	products: [],
+	products: [
+		{
+			id: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Product",
+			},
+			quantity: { type: Number },
+		},
+	],
 	orderId: { type: String, required: false, unique: true },
 	shipping: { type: Number, required: true, default: 8 },
 	subTotal: { type: Number, required: true },
