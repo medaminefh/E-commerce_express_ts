@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "prepare": "rm -rf dist && pnpm run build",
-    "dev": "pnpm prepare && cp -r src/views dist/ && concurrently \"tsc -w\" \"nodemon -q dist/index.js\""
+    "dev": "pnpm prepare && concurrently \"tsc -w\" \"nodemon -q dist/index.js\""
   },
   "type": "commonjs",
   "author": "medaminefh",

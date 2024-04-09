@@ -4,8 +4,7 @@ import { Response } from "express";
 
 export const createProduct = async (req: IRequest, res: Response) => {
 	try {
-		const { title, price, discount, priceAfterDiscount, description, published } = req.body;
-		const defaultImage = "https://media.glamourmagazine.co.uk/photos/6138a815aa3b5acf3b0dc7da/16:9/w_2768,h_1557,c_limit/product.jpg";
+		const { title, price, discount, priceAfterDiscount, description, published, image } = req.body;
 		// get the storyId
 		const newProduct = new productModel({
 			title,
@@ -13,7 +12,7 @@ export const createProduct = async (req: IRequest, res: Response) => {
 			discount: discount,
 			priceAfterDiscount: discount ? priceAfterDiscount: 0,
 			description: description,
-			image: defaultImage,
+			image,
 			published,
 			createdBy: req.user,
 			updatedBy: req.user,
