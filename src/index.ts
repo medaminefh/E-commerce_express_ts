@@ -30,6 +30,7 @@ import orderRoutes from "./routes/order.routes";
 import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
 import checkoutRoutes from "./routes/checkout.routes";
+import dashboard from "./routes/dashboard.routes";
 
 //routes middleware
 app.use("/products", productRoutes);
@@ -37,6 +38,7 @@ app.use("/orders", orderRoutes);
 app.use("/users", userRoutes);
 app.use("/checkout", checkoutRoutes);
 app.use("/auth", authRoutes);
+app.use("/dashboard", dashboard);
 
 //server listen
 const port: string = process.env.PORT || "5555";
